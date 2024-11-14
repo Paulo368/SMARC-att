@@ -31,6 +31,16 @@ public class DadosAgente implements Serializable {
         return grauEvidencia;
     }
 
+    public String getClassificacao() {
+        return classificacao;
+    }
+
+    public void setClassificacao(String classificacao) {
+        this.classificacao = classificacao;
+    }
+    
+    
+
     @Override
     public String toString() {
         return "DadosAgente{" + "tipo=" + tipo + ", grauEvidencia=" + grauEvidencia + ", classificacao=" + classificacao + '}';

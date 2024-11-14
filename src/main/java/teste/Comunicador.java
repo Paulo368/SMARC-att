@@ -15,10 +15,6 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 
-/**
- *
- * @author 2022122760265
- */
 public class Comunicador extends Thread {
 
     private String multiCastAddress = "224.0.0.1";
@@ -69,6 +65,7 @@ public class Comunicador extends Thread {
         return dados;
     }
 
+    @Override
     public void run() {
         DadosAgente dados = agente.processarDados();
         envia(dados);
