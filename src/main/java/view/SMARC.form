@@ -155,7 +155,7 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Qual sua altura?"/>
+            <Property name="text" type="java.lang.String" value="Altura do Paciente"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtAltura">
@@ -165,7 +165,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Qual seu peso?"/>
+            <Property name="text" type="java.lang.String" value="Peso do Paciente"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtPeso">

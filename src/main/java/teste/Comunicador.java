@@ -65,6 +65,11 @@ public class Comunicador extends Thread {
         return dados;
     }
 
+    public Agente getAgente() {
+        return agente;
+    }
+
+    
     @Override
     public void run() {
         DadosAgente dados = agente.processarDados();

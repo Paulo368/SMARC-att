@@ -11,6 +11,7 @@ import agentes.AgPressArt;
 import agentes.AgSedet;
 import agentes.Agente;
 import agentes.DadosAgente;
+import teste.Comunicador;
 
 /**
  *
@@ -79,7 +80,7 @@ public class SMARC extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jLabel2.setText("Qual sua altura?");
+        jLabel2.setText("Altura do Paciente");
 
         txtAltura.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -87,7 +88,7 @@ public class SMARC extends javax.swing.JDialog {
             }
         });
 
-        jLabel3.setText("Qual seu peso?");
+        jLabel3.setText("Peso do Paciente");
 
         txtPeso.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -252,7 +253,7 @@ public class SMARC extends javax.swing.JDialog {
 
     private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
         try {
-            // Obtenha os valores dos campos de texto
+            // Coletar os dados da interface
             double peso = Double.parseDouble(txtPeso.getText());
             double altura = Double.parseDouble(txtAltura.getText());
             int atividadeFisica = Integer.parseInt(txtAtividadeFis.getText());
@@ -260,29 +261,47 @@ public class SMARC extends javax.swing.JDialog {
             int pressaoSistolica = Integer.parseInt(txtPressArtSis.getText());
             int pressaoDiastolica = Integer.parseInt(txtPressArtDias.getText());
 
-            // Crie os agentes com os dados obtidos
+            // Criar os agentes
             Agente agenteObesidade = new AgObesi("Agente Obesidade", peso, altura);
-            Agente agentePressao = new AgPressArt("Agente Pressao", pressaoSistolica, pressaoDiastolica);
-            Agente agenteSedetarismo = new AgSedet("Agente Sedentarismo", atividadeFisica);
+            Agente agentePressao = new AgPressArt("Agente Pressão", pressaoSistolica, pressaoDiastolica);
+            Agente agenteSedentarismo = new AgSedet("Agente Sedentarismo", atividadeFisica);
             Agente agenteNicotina = new AgNicot("Agente Nicotina", pontuacaoNicotina);
 
-            // Execute os agentes em threads para processar os dados
-            DadosAgente dadosObesidade = agenteObesidade.processarDados();
-            DadosAgente dadosPressao = agentePressao.processarDados();
-            DadosAgente dadosSedetarismo = agenteSedetarismo.processarDados();
-            DadosAgente dadosNicotina = agenteNicotina.processarDados();
+            // Criar threads para cada agente
+            Comunicador threadObesidade = new Comunicador(agenteObesidade);
+            Comunicador threadPressao = new Comunicador(agentePressao);
+            Comunicador threadSedentarismo = new Comunicador(agenteSedentarismo);
+            Comunicador threadNicotina = new Comunicador(agenteNicotina);
 
-            // Crie o agente cardíaco com os dados processados
-            Agente agenteCardiaco = new AgCardiaco("Agente Cardíaco", dadosSedetarismo, dadosNicotina, dadosObesidade, dadosPressao);
+            // Iniciar as threads
+            threadObesidade.start();
+            threadPressao.start();
+            threadSedentarismo.start();
+            threadNicotina.start();
+
+            // Esperar threads terminarem e coletar os dados
+            threadObesidade.join();
+            threadPressao.join();
+            threadSedentarismo.join();
+            threadNicotina.join();
+
+            DadosAgente dadosObesidade = threadObesidade.getAgente().processarDados();
+            DadosAgente dadosPressao = threadPressao.getAgente().processarDados();
+            DadosAgente dadosSedentarismo = threadSedentarismo.getAgente().processarDados();
+            DadosAgente dadosNicotina = threadNicotina.getAgente().processarDados();
+
+            // Criar e processar o agente cardíaco
+            Agente agenteCardiaco = new AgCardiaco("Agente Cardíaco", dadosSedentarismo, dadosNicotina, dadosObesidade, dadosPressao);
             DadosAgente dadosCardiaco = agenteCardiaco.processarDados();
 
-            // Exiba o resultado no jTextArea1
-            jTextArea1.setText("Resultado do Agente Cardíaco:\n" + dadosCardiaco.getClassificacao());
-
+            // Exibir o resultado no jTextArea1
+            jTextArea1.setText("Resultado do Agente Cardíaco:\n");
+            jTextArea1.append("Grau de Evidência: " + dadosCardiaco.getGrauEvidencia() + "\n");
+            jTextArea1.append("Classificação: " + dadosCardiaco.getClassificacao() + "\n");
         } catch (NumberFormatException e) {
-            jTextArea1.setText("Erro: Verifique se todos os campos estão preenchidos corretamente com valores numéricos.");
-        } catch (Exception e) {
-            jTextArea1.setText("Erro ao processar os dados: " + e.getMessage());
+            jTextArea1.setText("Erro: Verifique os valores inseridos. Todos os campos devem estar preenchidos corretamente.");
+        } catch (InterruptedException e) {
+            jTextArea1.setText("Erro: As threads foram interrompidas inesperadamente.");
         }
     }//GEN-LAST:event_btnEnviarActionPerformed
 
