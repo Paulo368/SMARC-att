@@ -4,25 +4,26 @@
  */
 package agentes;
 
+import teste.Comunicador;
+
 /**
  *
  * @author 2022122760265
  */
 public class AgNicot extends Agente {
-    private int pontuacaoFagerstrom;
+    private double pontuacaoFagerstrom;
     private String classificacao;
 
-    
-    public AgNicot(String nome, int pontuacaoFagerstrom) {
-        super(nome);
+    public AgNicot(double pontuacaoFagerstrom, String nome, Comunicador comunicador) {
+        super(nome, comunicador);
         this.pontuacaoFagerstrom = pontuacaoFagerstrom;
     }
+
 
     @Override
     public DadosAgente processarDados() {
         double grauEvidencia = calcularGrauEvidencia();
 
-       classificacao = classificarDependencia(grauEvidencia);
         return new DadosAgente("Nicotina", grauEvidencia, classificacao);
     }
 
@@ -43,20 +44,6 @@ public class AgNicot extends Agente {
             return 0.25;
         } else {
             return 0.0;
-        }
-    }
-    
-    private String classificarDependencia(double grauEvidencia){
-        if (grauEvidencia >= 1.0) {
-            return "Muito dependente";
-        } else if (grauEvidencia >= 0.75) {
-            return "Dependente";
-        } else if (grauEvidencia >= 0.5) {
-            return "Moderado";
-        } else if (grauEvidencia >= 0.25) {
-            return "Pouco dependente";
-        } else {
-            return "Não dependente";
         }
     }
     

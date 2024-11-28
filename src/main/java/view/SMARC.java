@@ -4,13 +4,14 @@
  */
 package view;
 
-import agentes.AgCardiaco;
+import agentes.AgParaconsist;
 import agentes.AgNicot;
 import agentes.AgObesi;
 import agentes.AgPressArt;
 import agentes.AgSedet;
 import agentes.Agente;
 import agentes.DadosAgente;
+import java.util.ArrayList;
 import teste.Comunicador;
 
 /**
@@ -19,6 +20,7 @@ import teste.Comunicador;
  */
 public class SMARC extends javax.swing.JDialog {
 
+    ArrayList<Double> dados = new ArrayList<>();
     /**
      * Creates new form SMARC
      */
@@ -254,12 +256,18 @@ public class SMARC extends javax.swing.JDialog {
     private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
         try {
             // Coletar os dados da interface
-            double peso = Double.parseDouble(txtPeso.getText());
-            double altura = Double.parseDouble(txtAltura.getText());
-            int atividadeFisica = Integer.parseInt(txtAtividadeFis.getText());
-            int pontuacaoNicotina = Integer.parseInt(txtPontuacaoFangerstrom.getText());
-            int pressaoSistolica = Integer.parseInt(txtPressArtSis.getText());
-            int pressaoDiastolica = Integer.parseInt(txtPressArtDias.getText());
+            dados.add(Double.valueOf(txtPeso.getText()));
+            dados.add(Double.valueOf(txtAltura.getText()));
+            dados.add(Double.valueOf(txtAtividadeFis.getText()));
+            dados.add(Double.valueOf(txtPontuacaoFangerstrom.getText()));
+            dados.add(Double.valueOf(txtPressArtSis.getText()));
+            dados.add(Double.valueOf(txtPressArtDias.getText()));
+            
+            //Envia dados para o agente paraconsistente
+            Comunicador comunicador = new Comunicador(1234);
+            Agente agp = new AgParaconsist(dados,"Paraconsistente", comunicador);
+            
+            
 
             // Criar os agentes
             Agente agenteObesidade = new AgObesi("Agente Obesidade", peso, altura);
@@ -291,7 +299,7 @@ public class SMARC extends javax.swing.JDialog {
             DadosAgente dadosNicotina = threadNicotina.getAgente().processarDados();
 
             // Criar e processar o agente cardíaco
-            Agente agenteCardiaco = new AgCardiaco("Agente Cardíaco", dadosSedentarismo, dadosNicotina, dadosObesidade, dadosPressao);
+            Agente agenteCardiaco = new AgParaconsist("Agente Cardíaco", dadosSedentarismo, dadosNicotina, dadosObesidade, dadosPressao);
             DadosAgente dadosCardiaco = agenteCardiaco.processarDados();
 
             // Exibir o resultado no jTextArea1

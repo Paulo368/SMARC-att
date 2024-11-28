@@ -21,8 +21,6 @@ public class DadosAgente implements Serializable {
         this.classificacao = classificacao;
     }
 
-    
-
     public String getTipo() {
         return tipo;
     }
@@ -39,12 +37,9 @@ public class DadosAgente implements Serializable {
         this.classificacao = classificacao;
     }
     
-    
-
     @Override
     public String toString() {
         return "DadosAgente{" + "tipo=" + tipo + ", grauEvidencia=" + grauEvidencia + ", classificacao=" + classificacao + '}';
     }
 
-    
 }

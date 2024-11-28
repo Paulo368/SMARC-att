@@ -5,6 +5,7 @@
 package agentes;
 
 import java.io.Serializable;
+import teste.Comunicador;
 
 /**
  *
@@ -12,9 +13,11 @@ import java.io.Serializable;
  */
 public abstract class Agente implements Serializable{
     protected String nome;
+    protected Comunicador comunicador;
 
-    public Agente(String nome) {
+    public Agente(String nome, Comunicador comunicador) {
         this.nome = nome;
+        this.comunicador = comunicador;
     }
 
     public abstract DadosAgente processarDados(); // Método abstrato para cada agente implementar sua lógico

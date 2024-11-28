@@ -6,6 +6,7 @@ package teste;
 
 import agentes.Agente;
 import agentes.DadosAgente;
+import java.awt.List;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -14,17 +15,16 @@ import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.util.ArrayList;
 
 public class Comunicador extends Thread {
 
     private String multiCastAddress = "224.0.0.1";
-    private static int porta = 52684;
+    private int porta;
     private static InetAddress enderecoGrupo;
     private static MulticastSocket soc;
-    private final Agente agente;
-
+    
     public Comunicador(Agente agente) {
-        this.agente = agente;
         try {
             enderecoGrupo = InetAddress.getByName(multiCastAddress);
             soc = new MulticastSocket(porta);
@@ -34,7 +34,13 @@ public class Comunicador extends Thread {
         }
     }
 
-    public void envia(DadosAgente dados) {
+    public Comunicador(int porta) {
+        this.porta = porta;
+    }
+
+    
+
+    public void envia(ArrayList<String> dados, int porta) {
         try {
             ByteArrayOutputStream bASaida = new ByteArrayOutputStream();
             ObjectOutputStream saida = new ObjectOutputStream(bASaida);
@@ -47,9 +53,9 @@ public class Comunicador extends Thread {
         }
     }
 
-    public DadosAgente recebe() {
+    public ArrayList<String> recebe() {
         byte[] buffer = new byte[4096];
-        DadosAgente dados = null;
+        ArrayList<String> dados;
         try {
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
             soc.receive(packet);
@@ -63,16 +69,6 @@ public class Comunicador extends Thread {
             System.out.println("FALHA ClassNotFoundException"+e.getMessage());
         }
         return dados;
-    }
-
-    public Agente getAgente() {
-        return agente;
-    }
-
-    
-    @Override
-    public void run() {
-        DadosAgente dados = agente.processarDados();
-        envia(dados);
+        
     }
 }

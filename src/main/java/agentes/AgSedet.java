@@ -1,20 +1,22 @@
 package agentes;
 
-public class AgSedet extends Agente {
-    private int atividadesPorSemana;
-    private String classificacao;
+import teste.Comunicador;
 
-    public AgSedet(String nome, int atividadesPorSemana) {
-        super(nome);
+public class AgSedet extends Agente {
+    private double atividadesPorSemana;
+
+    public AgSedet(double atividadesPorSemana, String nome, Comunicador comunicador) {
+        super(nome, comunicador);
         this.atividadesPorSemana = atividadesPorSemana;
     }
+
+    
 
     @Override
     public DadosAgente processarDados() {
         double grauEvidencia = calcularGrauEvidencia();
-        classificacao = classificarSedentarismo(atividadesPorSemana);
 
-        return new DadosAgente("Sedentarismo", grauEvidencia, classificacao);
+        return new DadosAgente("Sedentarismo", grauEvidencia);
     }
 
     public double getGrauSedentarismo() {

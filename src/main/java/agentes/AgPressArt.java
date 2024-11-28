@@ -1,22 +1,24 @@
 package agentes;
 
+import teste.Comunicador;
+
 public class AgPressArt extends Agente {
     private double pas;  // Pressão Arterial Sistólica
     private double pad;  // Pressão Arterial Diastólica
-    private String classificacao;
 
-    public AgPressArt(String nome, double pas, double pad) {
-        super(nome);
+    public AgPressArt(double pas, double pad, String nome, Comunicador comunicador) {
+        super(nome, comunicador);
         this.pas = pas;
         this.pad = pad;
     }
 
+    
+
     @Override
     public DadosAgente processarDados() {
         double grauEvidencia = calcularGrauEvidencia();
-        classificacao = classificarPressao(pas, pad);
 
-        return new DadosAgente("Pressao", grauEvidencia, classificacao);
+        return new DadosAgente("Pressao", grauEvidencia);
     }
 
     private double calcularGrauEvidencia() {

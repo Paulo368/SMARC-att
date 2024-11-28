@@ -1,14 +1,19 @@
 package agentes;
 
+import teste.Comunicador;
+
 public class AgObesi extends Agente {
     private double peso;
-    private double altura;
+    private double altura; 
+    
 
-    public AgObesi(String nome, double peso, double altura) {
-        super(nome);
+    public AgObesi(double peso, double altura, String nome, Comunicador comunicador) {
+        super(nome, comunicador);
         this.peso = peso;
         this.altura = altura;
     }
+
+    
 
     @Override
     public DadosAgente processarDados() {
@@ -52,5 +57,4 @@ public class AgObesi extends Agente {
     public double getGrauObesidade() {
         return calcularGrauEvidencia();
     }
-
 }

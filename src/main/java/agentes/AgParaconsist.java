@@ -1,18 +1,27 @@
 package agentes;
 
-public class AgCardiaco extends Agente {
-    private DadosAgente dadosSedet;
-    private DadosAgente dadosNicotina;
-    private DadosAgente dadosObesidade;
-    private DadosAgente dadosPressao;
+import java.util.ArrayList;
+import teste.Comunicador;
 
-    public AgCardiaco(String nome, DadosAgente dadosSedet, DadosAgente dadosNicotina, DadosAgente dadosObesidade, DadosAgente dadosPressao) {
-        super(nome);
-        this.dadosSedet = dadosSedet;
-        this.dadosNicotina = dadosNicotina;
-        this.dadosObesidade = dadosObesidade;
-        this.dadosPressao = dadosPressao;
+public class AgParaconsist extends Agente {
+    //Separar os dados para inserir inserir 
+    private ArrayList<Double> dados;
+    
+    Comunicador cmNicotina = new Comunicador(1);
+    Comunicador cmObesidade = new Comunicador(2);
+    Comunicador cmPressao = new Comunicador(3);
+    Comunicador cmSedent = new Comunicador(4);
+    
+    private Agente agnict = new AgNicot(dados.get(3), "Agente nicotina", cmNicotina);
+    private Agente agobsei = new AgObesi(dados.get(0), dados.get(1), "Agente obesidade", cmObesidade);
+    private Agente agpress = new AgPressArt(dados.get(4), dados.get(5), "Agente pressão", cmPressao);
+    private Agente agsed = new AgSedet(dados.get(2), "Agente sedentarismo", cmSedent);
+
+    public AgParaconsist(ArrayList<Double> dados, String nome, Comunicador comunicador) {
+        super(nome, comunicador);
+        this.dados = dados;
     }
+    
 
     @Override
     public DadosAgente processarDados() {
