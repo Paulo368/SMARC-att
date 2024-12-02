@@ -1,22 +1,26 @@
 package agentes;
 
+import java.util.ArrayList;
 import teste.Comunicador;
 
 public class AgSedet extends Agente {
     private double atividadesPorSemana;
 
-    public AgSedet(double atividadesPorSemana, String nome, Comunicador comunicador) {
+    public AgSedet(String nome, Comunicador comunicador) {
         super(nome, comunicador);
-        this.atividadesPorSemana = atividadesPorSemana;
     }
 
-    
+    @Override
+    public void receberDados(){
+        ArrayList<Double> dados = comunicador.recebe();
+        atividadesPorSemana = dados.get(0);
+    }
 
     @Override
     public DadosAgente processarDados() {
         double grauEvidencia = calcularGrauEvidencia();
 
-        return new DadosAgente("Sedentarismo", grauEvidencia);
+        return new DadosAgente("Sedentarismo", grauEvidencia, "a");
     }
 
     public double getGrauSedentarismo() {

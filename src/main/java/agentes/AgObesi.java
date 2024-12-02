@@ -1,5 +1,6 @@
 package agentes;
 
+import java.util.ArrayList;
 import teste.Comunicador;
 
 public class AgObesi extends Agente {
@@ -7,12 +8,16 @@ public class AgObesi extends Agente {
     private double altura; 
     
 
-    public AgObesi(double peso, double altura, String nome, Comunicador comunicador) {
+    public AgObesi(String nome, Comunicador comunicador) {
         super(nome, comunicador);
-        this.peso = peso;
-        this.altura = altura;
     }
-
+  
+    @Override
+    public void receberDados(){
+        ArrayList<Double> dados = comunicador.recebe();
+        peso = dados.get(0);
+        altura = dados.get(1);
+    }
     
 
     @Override

@@ -1,5 +1,6 @@
 package agentes;
 
+import java.awt.List;
 import java.util.ArrayList;
 import teste.Comunicador;
 
@@ -7,26 +8,52 @@ public class AgParaconsist extends Agente {
     //Separar os dados para inserir inserir 
     private ArrayList<Double> dados;
     
-    Comunicador cmNicotina = new Comunicador(1);
-    Comunicador cmObesidade = new Comunicador(2);
-    Comunicador cmPressao = new Comunicador(3);
-    Comunicador cmSedent = new Comunicador(4);
-    
-    private Agente agnict = new AgNicot(dados.get(3), "Agente nicotina", cmNicotina);
-    private Agente agobsei = new AgObesi(dados.get(0), dados.get(1), "Agente obesidade", cmObesidade);
-    private Agente agpress = new AgPressArt(dados.get(4), dados.get(5), "Agente pressão", cmPressao);
-    private Agente agsed = new AgSedet(dados.get(2), "Agente sedentarismo", cmSedent);
+    private ArrayList<Double> listNic = new ArrayList<>();
+    private ArrayList<Double> listobsei = new ArrayList<>();
+    private ArrayList<Double> listpress = new ArrayList<>();
+    private ArrayList<Double> listsedent = new ArrayList<>();
 
-    public AgParaconsist(ArrayList<Double> dados, String nome, Comunicador comunicador) {
+    public AgParaconsist(String nome, Comunicador comunicador) {
         super(nome, comunicador);
-        this.dados = dados;
     }
+    
+    @Override
+    public void enviarDadosAgenteNicotina(){
+        listNic.add(dados.get(3));
+        
+        comunicador.envia(listNic, 1);
+    }
+    
+    @Override
+    public void enviarDadosAgenteObesidade(){
+        listobsei.add(dados.get(0));
+        listobsei.add(dados.get(1));
+
+        comunicador.envia(listobsei, 2);
+    }
+    
+    @Override
+    public void enviarDadosAgentePressao(){
+        listpress.add(dados.get(4));
+        listpress.add(dados.get(5));
+        
+        comunicador.envia(listpress, 3);
+    }
+    
+    @Override
+    public void enviarDadosAgenteSedentarismo(){
+        listsedent.add(dados.get(2));
+        
+        comunicador.envia(listsedent, 4);
+    }
+    
+    
     
 
     @Override
     public DadosAgente processarDados() {
         // NAP1g1: combina Sedentarismo e Nicotina
-        double ug11 = calcularUG(dadosSedet.getGrauEvidencia(), 1 - dadosNicotina.getGrauEvidencia());
+        /*double ug11 = calcularUG(dadosSedet.getGrauEvidencia(), 1 - dadosNicotina.getGrauEvidencia());
         double grauEvidenciaNap1g1 = calcularEvidenciaParaconsistente(dadosSedet.getGrauEvidencia(), 1 - dadosNicotina.getGrauEvidencia());
 
         // NAP2g1: combina Nicotina e Obesidade
@@ -49,8 +76,8 @@ public class AgParaconsist extends Agente {
         System.out.println("Classificação Pressão Arterial: " + classificacaoPressao);
 
         // Classificação do risco
-        String classificacao = classificarRisco(grauEvidenciaFinal, ug13);
-        return new DadosAgente("Cardiaco", grauEvidenciaFinal, classificacao);
+        String classificacao = classificarRisco(grauEvidenciaFinal, ug13);*/
+        return new DadosAgente("Cardiaco", 0, "a");
     }
 
     // Método para classificar a pressão arterial
@@ -89,4 +116,12 @@ public class AgParaconsist extends Agente {
             return "Baixo risco cardíaco";
         }
     }
+
+    @Override
+    public void setDados(ArrayList<Double> dados) {
+        this.dados = dados;
+    }
+    
+    
+    
 }

@@ -10,7 +10,6 @@ import agentes.AgObesi;
 import agentes.AgPressArt;
 import agentes.AgSedet;
 import agentes.Agente;
-import agentes.DadosAgente;
 import java.util.ArrayList;
 import teste.Comunicador;
 
@@ -21,6 +20,18 @@ import teste.Comunicador;
 public class SMARC extends javax.swing.JDialog {
 
     ArrayList<Double> dados = new ArrayList<>();
+    Comunicador comunicador = new Comunicador(1234);
+    Agente agp = new AgParaconsist("Paraconsistente", comunicador);
+    
+    Comunicador cmNicotina = new Comunicador(1);
+    Comunicador cmObesidade = new Comunicador(2);
+    Comunicador cmPressao = new Comunicador(3);
+    Comunicador cmSedent = new Comunicador(4); 
+    
+    private Agente agnict = new AgNicot("Agente nicotina", cmNicotina);
+    private Agente agobsei = new AgObesi("Agente obesidade", cmObesidade);
+    private Agente agpress = new AgPressArt("Agente pressão", cmPressao);
+    private Agente agsed = new AgSedet("Agente sedentarismo", cmSedent);
     /**
      * Creates new form SMARC
      */
@@ -264,13 +275,27 @@ public class SMARC extends javax.swing.JDialog {
             dados.add(Double.valueOf(txtPressArtDias.getText()));
             
             //Envia dados para o agente paraconsistente
-            Comunicador comunicador = new Comunicador(1234);
-            Agente agp = new AgParaconsist(dados,"Paraconsistente", comunicador);
+            agp.setDados(dados);
+            
+            //Envia e recebe os dados para cada agente
+            /*agp.enviarDadosAgenteNicotina();
+            agnict.receberDados();
+            
+            agp.enviarDadosAgenteObesidade();
+            agobsei.receberDados();
+            
+            agp.enviarDadosAgentePressao();
+            agpress.receberDados();
+            
+            agp.enviarDadosAgenteSedentarismo();
+            agsed.receberDados();*/
+            
             
             
 
+            
             // Criar os agentes
-            Agente agenteObesidade = new AgObesi("Agente Obesidade", peso, altura);
+            /*Agente agenteObesidade = new AgObesi("Agente Obesidade", peso, altura);
             Agente agentePressao = new AgPressArt("Agente Pressão", pressaoSistolica, pressaoDiastolica);
             Agente agenteSedentarismo = new AgSedet("Agente Sedentarismo", atividadeFisica);
             Agente agenteNicotina = new AgNicot("Agente Nicotina", pontuacaoNicotina);
@@ -305,12 +330,12 @@ public class SMARC extends javax.swing.JDialog {
             // Exibir o resultado no jTextArea1
             jTextArea1.setText("Resultado do Agente Cardíaco:\n");
             jTextArea1.append("Grau de Evidência: " + dadosCardiaco.getGrauEvidencia() + "\n");
-            jTextArea1.append("Classificação: " + dadosCardiaco.getClassificacao() + "\n");
+            jTextArea1.append("Classificação: " + dadosCardiaco.getClassificacao() + "\n");*/
         } catch (NumberFormatException e) {
             jTextArea1.setText("Erro: Verifique os valores inseridos. Todos os campos devem estar preenchidos corretamente.");
-        } catch (InterruptedException e) {
+        }/* catch (InterruptedException e) {
             jTextArea1.setText("Erro: As threads foram interrompidas inesperadamente.");
-        }
+        }*/
     }//GEN-LAST:event_btnEnviarActionPerformed
 
     /**

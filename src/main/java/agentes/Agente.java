@@ -5,6 +5,7 @@
 package agentes;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import teste.Comunicador;
 
 /**
@@ -24,5 +25,28 @@ public abstract class Agente implements Serializable{
 
     public String getNome() {
         return nome;
+    }
+
+    public void setDados(ArrayList<Double> dados) {
+    }
+
+    public void receberDados() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public void enviarDadosAgenteNicotina() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public void enviarDadosAgenteObesidade() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public void enviarDadosAgentePressao() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public void enviarDadosAgenteSedentarismo() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

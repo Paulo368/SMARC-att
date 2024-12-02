@@ -1,24 +1,29 @@
 package agentes;
 
+import java.util.ArrayList;
 import teste.Comunicador;
 
 public class AgPressArt extends Agente {
     private double pas;  // Pressão Arterial Sistólica
     private double pad;  // Pressão Arterial Diastólica
 
-    public AgPressArt(double pas, double pad, String nome, Comunicador comunicador) {
+    public AgPressArt(String nome, Comunicador comunicador) {
         super(nome, comunicador);
-        this.pas = pas;
-        this.pad = pad;
     }
 
+    @Override
+    public void receberDados(){
+        ArrayList<Double> dados = comunicador.recebe();
+        pas = dados.get(0);
+        pad = dados.get(1);
+    }
     
 
     @Override
     public DadosAgente processarDados() {
         double grauEvidencia = calcularGrauEvidencia();
 
-        return new DadosAgente("Pressao", grauEvidencia);
+        return new DadosAgente("Pressao", grauEvidencia, "a");
     }
 
     private double calcularGrauEvidencia() {

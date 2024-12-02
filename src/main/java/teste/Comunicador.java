@@ -23,52 +23,48 @@ public class Comunicador extends Thread {
     private int porta;
     private static InetAddress enderecoGrupo;
     private static MulticastSocket soc;
-    
-    public Comunicador(Agente agente) {
+
+    public Comunicador(int porta) {
         try {
+            this.porta = porta;
             enderecoGrupo = InetAddress.getByName(multiCastAddress);
             soc = new MulticastSocket(porta);
             soc.joinGroup(enderecoGrupo);
         } catch (IOException e) {
-            System.out.println("FALHA IOException"+e.getMessage());
+            System.out.println("FALHA IOException" + e.getMessage());
         }
     }
 
-    public Comunicador(int porta) {
-        this.porta = porta;
-    }
-
-    
-
-    public void envia(ArrayList<String> dados, int porta) {
+    public void envia(ArrayList<Double> dados, int porta) {
         try {
             ByteArrayOutputStream bASaida = new ByteArrayOutputStream();
             ObjectOutputStream saida = new ObjectOutputStream(bASaida);
             saida.writeObject(dados);
+            saida.flush(); // Garante que todos os dados sejam escritos
             byte[] data = bASaida.toByteArray();
-            soc.send(new DatagramPacket(data, data.length, enderecoGrupo, porta));
+            DatagramPacket pacote = new DatagramPacket(data, data.length, enderecoGrupo, porta);
+            soc.send(pacote);
             System.out.println("Enviado: " + dados);
         } catch (IOException e) {
-            System.out.println("IOException"+e.getMessage());
+            System.err.println("IOException: " + e.getMessage());
         }
     }
 
-    public ArrayList<String> recebe() {
+    public ArrayList<Double> recebe() {
         byte[] buffer = new byte[4096];
-        ArrayList<String> dados;
+        ArrayList<Double> dados = null;
         try {
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
             soc.receive(packet);
-            ByteArrayInputStream bAEntrada = new ByteArrayInputStream(buffer);
+            ByteArrayInputStream bAEntrada = new ByteArrayInputStream(buffer, 0, packet.getLength());
             ObjectInputStream entrada = new ObjectInputStream(bAEntrada);
-            dados = (DadosAgente) entrada.readObject();
+            dados = (ArrayList<Double>) entrada.readObject(); // Casting para ArrayList<Double>
             System.out.println("Recebido: " + dados);
         } catch (IOException e) {
-            System.out.println("FALHA IOException"+e.getMessage());
-        } catch (ClassNotFoundException e){
-            System.out.println("FALHA ClassNotFoundException"+e.getMessage());
+            System.err.println("FALHA IOException: " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            System.err.println("FALHA ClassNotFoundException: " + e.getMessage());
         }
         return dados;
-        
     }
 }

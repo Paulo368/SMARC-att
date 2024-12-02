@@ -4,6 +4,7 @@
  */
 package agentes;
 
+import java.util.ArrayList;
 import teste.Comunicador;
 
 /**
@@ -14,11 +15,15 @@ public class AgNicot extends Agente {
     private double pontuacaoFagerstrom;
     private String classificacao;
 
-    public AgNicot(double pontuacaoFagerstrom, String nome, Comunicador comunicador) {
+    public AgNicot(String nome, Comunicador comunicador) {
         super(nome, comunicador);
-        this.pontuacaoFagerstrom = pontuacaoFagerstrom;
     }
 
+    @Override
+    public void receberDados(){
+        ArrayList<Double> dados = comunicador.recebe();
+        pontuacaoFagerstrom = dados.get(0);
+    }
 
     @Override
     public DadosAgente processarDados() {
