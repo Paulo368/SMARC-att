@@ -20,13 +20,13 @@ import teste.Comunicador;
 public class SMARC extends javax.swing.JDialog {
 
     ArrayList<Double> dados = new ArrayList<>();
-    Comunicador comunicador = new Comunicador(1234);
+    Comunicador comunicador = new Comunicador();
     Agente agp = new AgParaconsist("Paraconsistente", comunicador);
     
-    Comunicador cmNicotina = new Comunicador(1);
-    Comunicador cmObesidade = new Comunicador(2);
-    Comunicador cmPressao = new Comunicador(3);
-    Comunicador cmSedent = new Comunicador(4); 
+    Comunicador cmNicotina = new Comunicador();
+    Comunicador cmObesidade = new Comunicador();
+    Comunicador cmPressao = new Comunicador();
+    Comunicador cmSedent = new Comunicador(); 
     
     private Agente agnict = new AgNicot("Agente nicotina", cmNicotina);
     private Agente agobsei = new AgObesi("Agente obesidade", cmObesidade);
@@ -278,18 +278,15 @@ public class SMARC extends javax.swing.JDialog {
             agp.setDados(dados);
             
             //Envia e recebe os dados para cada agente
-            /*agp.enviarDadosAgenteNicotina();
-            agnict.receberDados();
-            
+            agp.enviarDadosAgenteNicotina();
             agp.enviarDadosAgenteObesidade();
-            agobsei.receberDados();
-            
             agp.enviarDadosAgentePressao();
-            agpress.receberDados();
-            
             agp.enviarDadosAgenteSedentarismo();
-            agsed.receberDados();*/
             
+            agnict.receberDados();
+            agobsei.receberDados();
+            agpress.receberDados();
+            agsed.receberDados();
             
             
 

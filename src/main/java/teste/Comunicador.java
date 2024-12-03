@@ -20,13 +20,12 @@ import java.util.ArrayList;
 public class Comunicador extends Thread {
 
     private String multiCastAddress = "224.0.0.1";
-    private int porta;
+    private int porta = 1;
     private static InetAddress enderecoGrupo;
     private static MulticastSocket soc;
 
-    public Comunicador(int porta) {
+    public Comunicador() {
         try {
-            this.porta = porta;
             enderecoGrupo = InetAddress.getByName(multiCastAddress);
             soc = new MulticastSocket(porta);
             soc.joinGroup(enderecoGrupo);
@@ -35,7 +34,7 @@ public class Comunicador extends Thread {
         }
     }
 
-    public void envia(ArrayList<Double> dados, int porta) {
+    public void envia(ArrayList<Double> dados) {
         try {
             ByteArrayOutputStream bASaida = new ByteArrayOutputStream();
             ObjectOutputStream saida = new ObjectOutputStream(bASaida);

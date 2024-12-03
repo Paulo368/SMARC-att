@@ -19,6 +19,10 @@ public class AgObesi extends Agente {
         altura = dados.get(1);
     }
     
+    @Override
+    public void startComunicador(){
+        comunicador.start();
+    }
 
     @Override
     public DadosAgente processarDados() {

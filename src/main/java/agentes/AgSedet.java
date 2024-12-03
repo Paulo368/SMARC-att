@@ -22,6 +22,11 @@ public class AgSedet extends Agente {
 
         return new DadosAgente("Sedentarismo", grauEvidencia, "a");
     }
+    
+    @Override
+    public void startComunicador(){
+        comunicador.start();
+    }
 
     public double getGrauSedentarismo() {
         return calcularGrauEvidencia();

@@ -24,6 +24,11 @@ public class AgNicot extends Agente {
         ArrayList<Double> dados = comunicador.recebe();
         pontuacaoFagerstrom = dados.get(0);
     }
+    
+    @Override
+    public void startComunicador(){
+        comunicador.start();
+    }
 
     @Override
     public DadosAgente processarDados() {

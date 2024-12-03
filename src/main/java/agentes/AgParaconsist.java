@@ -21,7 +21,7 @@ public class AgParaconsist extends Agente {
     public void enviarDadosAgenteNicotina(){
         listNic.add(dados.get(3));
         
-        comunicador.envia(listNic, 1);
+        comunicador.envia(listNic);
     }
     
     @Override
@@ -29,7 +29,7 @@ public class AgParaconsist extends Agente {
         listobsei.add(dados.get(0));
         listobsei.add(dados.get(1));
 
-        comunicador.envia(listobsei, 2);
+        comunicador.envia(listobsei);
     }
     
     @Override
@@ -37,18 +37,20 @@ public class AgParaconsist extends Agente {
         listpress.add(dados.get(4));
         listpress.add(dados.get(5));
         
-        comunicador.envia(listpress, 3);
+        comunicador.envia(listpress);
     }
     
     @Override
     public void enviarDadosAgenteSedentarismo(){
         listsedent.add(dados.get(2));
         
-        comunicador.envia(listsedent, 4);
+        comunicador.envia(listsedent);
     }
     
-    
-    
+    @Override
+    public void startComunicador(){
+        comunicador.start();
+    }
 
     @Override
     public DadosAgente processarDados() {

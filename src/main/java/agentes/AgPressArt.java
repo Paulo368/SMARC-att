@@ -18,6 +18,10 @@ public class AgPressArt extends Agente {
         pad = dados.get(1);
     }
     
+    @Override
+    public void startComunicador(){
+        comunicador.start();
+    }
 
     @Override
     public DadosAgente processarDados() {
