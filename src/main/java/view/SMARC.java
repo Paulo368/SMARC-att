@@ -10,6 +10,7 @@ import agentes.AgObesi;
 import agentes.AgPressArt;
 import agentes.AgSedet;
 import agentes.Agente;
+import agentes.DadosAgente;
 import java.util.ArrayList;
 import teste.Comunicador;
 
@@ -22,16 +23,17 @@ public class SMARC extends javax.swing.JDialog {
     ArrayList<Double> dados = new ArrayList<>();
     Comunicador comunicador = new Comunicador();
     Agente agp = new AgParaconsist("Paraconsistente", comunicador);
-    
+
     Comunicador cmNicotina = new Comunicador();
     Comunicador cmObesidade = new Comunicador();
     Comunicador cmPressao = new Comunicador();
-    Comunicador cmSedent = new Comunicador(); 
-    
+    Comunicador cmSedent = new Comunicador();
+
     private Agente agnict = new AgNicot("Agente nicotina", cmNicotina);
     private Agente agobsei = new AgObesi("Agente obesidade", cmObesidade);
     private Agente agpress = new AgPressArt("Agente pressão", cmPressao);
     private Agente agsed = new AgSedet("Agente sedentarismo", cmSedent);
+
     /**
      * Creates new form SMARC
      */
@@ -273,66 +275,47 @@ public class SMARC extends javax.swing.JDialog {
             dados.add(Double.valueOf(txtPontuacaoFangerstrom.getText()));
             dados.add(Double.valueOf(txtPressArtSis.getText()));
             dados.add(Double.valueOf(txtPressArtDias.getText()));
-            
-            //Envia dados para o agente paraconsistente
+
+            // Envia dados para o agente paraconsistente
             agp.setDados(dados);
-            
-            //Envia e recebe os dados para cada agente
+
+            // Envia e recebe os dados para cada agente
             agp.enviarDadosAgenteNicotina();
             agp.enviarDadosAgenteObesidade();
             agp.enviarDadosAgentePressao();
             agp.enviarDadosAgenteSedentarismo();
-            
+
             agnict.receberDados();
             agobsei.receberDados();
             agpress.receberDados();
             agsed.receberDados();
             
+            agnict.enviarDadosAgenteNicotina();
+            agobsei.enviarDadosAgenteObesidade();
+            agpress.enviarDadosAgentePressao();
+            agsed.enviarDadosAgenteSedentarismo();
             
+            agp.recebeDadosAgenteNicotina();
+            agp.recebeDadosAgenteObesidade();
+            agp.recebeDadosAgentePressao();
+            agp.recebeDadosAgenteSedentarismo();
 
-            
-            // Criar os agentes
-            /*Agente agenteObesidade = new AgObesi("Agente Obesidade", peso, altura);
-            Agente agentePressao = new AgPressArt("Agente Pressão", pressaoSistolica, pressaoDiastolica);
-            Agente agenteSedentarismo = new AgSedet("Agente Sedentarismo", atividadeFisica);
-            Agente agenteNicotina = new AgNicot("Agente Nicotina", pontuacaoNicotina);
+            // Processa os dados e obtém o resultado
+            DadosAgente resultado = agp.processarDados();
 
-            // Criar threads para cada agente
-            Comunicador threadObesidade = new Comunicador(agenteObesidade);
-            Comunicador threadPressao = new Comunicador(agentePressao);
-            Comunicador threadSedentarismo = new Comunicador(agenteSedentarismo);
-            Comunicador threadNicotina = new Comunicador(agenteNicotina);
+            // Exibe o resultado no JTextArea
+            String resultadoTexto = "Resultado do cálculo:\n";
+            resultadoTexto += "Classificação do Risco Cardíaco: " + resultado.getTipo() + "\n";
+            resultadoTexto += "Grau de Evidência Final: " + resultado.getGrauEvidencia() + "\n";
 
-            // Iniciar as threads
-            threadObesidade.start();
-            threadPressao.start();
-            threadSedentarismo.start();
-            threadNicotina.start();
+            // Exibe os dados no JTextArea
+            jTextArea1.setText(resultadoTexto);
 
-            // Esperar threads terminarem e coletar os dados
-            threadObesidade.join();
-            threadPressao.join();
-            threadSedentarismo.join();
-            threadNicotina.join();
-
-            DadosAgente dadosObesidade = threadObesidade.getAgente().processarDados();
-            DadosAgente dadosPressao = threadPressao.getAgente().processarDados();
-            DadosAgente dadosSedentarismo = threadSedentarismo.getAgente().processarDados();
-            DadosAgente dadosNicotina = threadNicotina.getAgente().processarDados();
-
-            // Criar e processar o agente cardíaco
-            Agente agenteCardiaco = new AgParaconsist("Agente Cardíaco", dadosSedentarismo, dadosNicotina, dadosObesidade, dadosPressao);
-            DadosAgente dadosCardiaco = agenteCardiaco.processarDados();
-
-            // Exibir o resultado no jTextArea1
-            jTextArea1.setText("Resultado do Agente Cardíaco:\n");
-            jTextArea1.append("Grau de Evidência: " + dadosCardiaco.getGrauEvidencia() + "\n");
-            jTextArea1.append("Classificação: " + dadosCardiaco.getClassificacao() + "\n");*/
         } catch (NumberFormatException e) {
             jTextArea1.setText("Erro: Verifique os valores inseridos. Todos os campos devem estar preenchidos corretamente.");
-        }/* catch (InterruptedException e) {
-            jTextArea1.setText("Erro: As threads foram interrompidas inesperadamente.");
-        }*/
+        } catch (Exception e) {
+            jTextArea1.setText("Erro inesperado: " + e.getMessage());
+        }
     }//GEN-LAST:event_btnEnviarActionPerformed
 
     /**

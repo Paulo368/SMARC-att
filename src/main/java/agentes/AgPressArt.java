@@ -18,6 +18,16 @@ public class AgPressArt extends Agente {
         pad = dados.get(1);
     }
     
+    
+    @Override
+    public void enviarDadosAgentePressao() {
+        ArrayList<Double> dados = new ArrayList<>();
+        dados.add(calcularGrauEvidencia());  // Adiciona o grau de evidência de nicotina à lista
+
+        // Envia os dados através do comunicador
+        comunicador.envia(dados);
+    }
+    
     @Override
     public void startComunicador(){
         comunicador.start();
@@ -27,7 +37,7 @@ public class AgPressArt extends Agente {
     public DadosAgente processarDados() {
         double grauEvidencia = calcularGrauEvidencia();
 
-        return new DadosAgente("Pressao", grauEvidencia, "a");
+        return new DadosAgente("Pressao", grauEvidencia);
     }
 
     private double calcularGrauEvidencia() {

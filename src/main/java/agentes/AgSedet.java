@@ -15,12 +15,21 @@ public class AgSedet extends Agente {
         ArrayList<Double> dados = comunicador.recebe();
         atividadesPorSemana = dados.get(0);
     }
+    
+    @Override
+    public void enviarDadosAgenteSedentarismo() {
+        ArrayList<Double> dados = new ArrayList<>();
+        dados.add(calcularGrauEvidencia());  // Adiciona o grau de evidência de nicotina à lista
+
+        // Envia os dados através do comunicador
+        comunicador.envia(dados);
+    }
 
     @Override
     public DadosAgente processarDados() {
         double grauEvidencia = calcularGrauEvidencia();
 
-        return new DadosAgente("Sedentarismo", grauEvidencia, "a");
+        return new DadosAgente("Sedentarismo", grauEvidencia);
     }
     
     @Override

@@ -4,23 +4,32 @@ import java.util.ArrayList;
 import teste.Comunicador;
 
 public class AgObesi extends Agente {
+
     private double peso;
-    private double altura; 
-    
+    private double altura;
 
     public AgObesi(String nome, Comunicador comunicador) {
         super(nome, comunicador);
     }
-  
+
     @Override
-    public void receberDados(){
+    public void receberDados() {
         ArrayList<Double> dados = comunicador.recebe();
         peso = dados.get(0);
         altura = dados.get(1);
     }
-    
+
     @Override
-    public void startComunicador(){
+    public void enviarDadosAgenteObesidade() {
+        ArrayList<Double> dados = new ArrayList<>();
+        dados.add(calcularGrauEvidencia());  // Adiciona o grau de evidência de nicotina à lista
+
+        // Envia os dados através do comunicador
+        comunicador.envia(dados);
+    }
+
+    @Override
+    public void startComunicador() {
         comunicador.start();
     }
 
@@ -28,10 +37,8 @@ public class AgObesi extends Agente {
     public DadosAgente processarDados() {
         double imc = peso / (altura * altura);
         double grauEvidencia = calcularGrauEvidencia();
-        String classificacao = classificarIMC(imc);
 
-
-        return new DadosAgente("Obesidade", grauEvidencia, classificacao);
+        return new DadosAgente("Obesidade", grauEvidencia);
     }
 
     private double calcularIMC() {
@@ -49,20 +56,6 @@ public class AgObesi extends Agente {
         }
     }
 
-    private String classificarIMC(double imc) {
-        if (imc < 20) {
-            return "Abaixo do peso";
-        } else if (imc >= 20 && imc < 25) {
-            return "Normal";
-        } else if (imc >= 25 && imc < 30) {
-            return "Leve";
-        } else if (imc >= 30 && imc < 40) {
-            return "Moderada";
-        } else {
-            return "Grave";
-        }
-    }
-    
     public double getGrauObesidade() {
         return calcularGrauEvidencia();
     }

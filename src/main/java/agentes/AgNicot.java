@@ -26,6 +26,15 @@ public class AgNicot extends Agente {
     }
     
     @Override
+    public void enviarDadosAgenteNicotina() {
+        ArrayList<Double> dados = new ArrayList<>();
+        dados.add(calcularGrauEvidencia());  // Adiciona o grau de evidência de nicotina à lista
+
+        // Envia os dados através do comunicador
+        comunicador.envia(dados);
+    }
+    
+    @Override
     public void startComunicador(){
         comunicador.start();
     }
@@ -34,7 +43,7 @@ public class AgNicot extends Agente {
     public DadosAgente processarDados() {
         double grauEvidencia = calcularGrauEvidencia();
 
-        return new DadosAgente("Nicotina", grauEvidencia, classificacao);
+        return new DadosAgente("Nicotina", grauEvidencia);
     }
 
     private double calcularGrauEvidencia() {
