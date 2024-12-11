@@ -13,13 +13,11 @@ public class AgParaconsist extends Agente {
     private ArrayList<Double> listobsei = new ArrayList<>();
     private ArrayList<Double> listpress = new ArrayList<>();
     private ArrayList<Double> listsedent = new ArrayList<>();
-
-    private double pontuacaoFagerstrom;
-    private double peso;
-    private double altura;
-    private double pas;  // Pressão Arterial Sistólica
-    private double pad;  // Pressão Arterial Diastólica
-    private double atividadesPorSemana;
+    
+    double grauEvidenciaNicotina;
+    double grauEvidenciaObesidade;
+    double grauEvidenciaPressao;
+    double grauEvidenciaSedentarismo;
 
     public AgParaconsist(String nome, Comunicador comunicador) {
         super(nome, comunicador);
@@ -60,7 +58,7 @@ public class AgParaconsist extends Agente {
         // Recebe os dados do agente de nicotina (apenas o grau de evidência)
         ArrayList<Double> dadosAgente = comunicador.recebe(); // O comunicador vai fornecer os dados
         if (dadosAgente != null && !dadosAgente.isEmpty()) {
-            double grauEvidenciaNicotina = dadosAgente.get(0); // Assume-se que o primeiro valor é o grau de evidência
+            grauEvidenciaNicotina = dadosAgente.get(0); // Assume-se que o primeiro valor é o grau de evidência
             System.out.println("Grau de Evidência (Nicotina): " + grauEvidenciaNicotina);
         }
     }
@@ -70,7 +68,7 @@ public class AgParaconsist extends Agente {
         // Recebe os dados do agente de obesidade (apenas o grau de evidência)
         ArrayList<Double> dadosAgente = comunicador.recebe(); // O comunicador vai fornecer os dados
         if (dadosAgente != null && !dadosAgente.isEmpty()) {
-            double grauEvidenciaObesidade = dadosAgente.get(0); // Assume-se que o primeiro valor é o grau de evidência
+            grauEvidenciaObesidade = 1-dadosAgente.get(0); // Assume-se que o primeiro valor é o grau de evidência
             System.out.println("Grau de Evidência (Obesidade): " + grauEvidenciaObesidade);
         }
     }
@@ -80,7 +78,7 @@ public class AgParaconsist extends Agente {
         // Recebe os dados do agente de pressão arterial (apenas o grau de evidência)
         ArrayList<Double> dadosAgente = comunicador.recebe(); // O comunicador vai fornecer os dados
         if (dadosAgente != null && !dadosAgente.isEmpty()) {
-            double grauEvidenciaPressao = dadosAgente.get(0); // Assume-se que o primeiro valor é o grau de evidência
+            grauEvidenciaPressao = dadosAgente.get(0); // Assume-se que o primeiro valor é o grau de evidência
             System.out.println("Grau de Evidência (Pressão): " + grauEvidenciaPressao);
         }
     }
@@ -90,7 +88,7 @@ public class AgParaconsist extends Agente {
         // Recebe os dados do agente de sedentarismo (apenas o grau de evidência)
         ArrayList<Double> dadosAgente = comunicador.recebe(); // O comunicador vai fornecer os dados
         if (dadosAgente != null && !dadosAgente.isEmpty()) {
-            double grauEvidenciaSedentarismo = dadosAgente.get(0); // Assume-se que o primeiro valor é o grau de evidência
+            grauEvidenciaSedentarismo = 1-dadosAgente.get(0); // Assume-se que o primeiro valor é o grau de evidência
             System.out.println("Grau de Evidência (Sedentarismo): " + grauEvidenciaSedentarismo);
         }
     }
@@ -102,25 +100,22 @@ public class AgParaconsist extends Agente {
 
     @Override
     public DadosAgente processarDados() {
+        double muFavoravel = Math.max(grauEvidenciaNicotina,grauEvidenciaPressao);
+        double lambdaDesfavoravel = Math.min(grauEvidenciaSedentarismo, grauEvidenciaObesidade);
         
-        
-        double grauEvidenciaNap1g1 = calcularEvidenciaParaconsistente(atividadesPorSemana, pontuacaoFagerstrom);
+        double grauEvidenciaNap1g1 = calcularEvidenciaParaconsistente(muFavoravel, lambdaDesfavoravel);
 
         // NAP2g1: combinação entre Nicotina e Obesidade
-        double grauEvidenciaNap2g1 = calcularEvidenciaParaconsistente(pontuacaoFagerstrom, peso);  // peso do agente de obesidade
+        double grauEvidenciaNap2g1 = calcularEvidenciaParaconsistente(grauEvidenciaNicotina, grauEvidenciaObesidade);
 
         // NAP3g1: combinação de NAP1g1 e NAP2g1
         double grauEvidenciaNap3g1 = calcularEvidenciaParaconsistente(grauEvidenciaNap1g1, grauEvidenciaNap2g1);
 
-        // Cálculo do risco com base na pressão arterial
-        String classificacaoPressao = classificarPressao(pas);  // ou use pad, dependendo do seu critério
-        double grauPressao = calcularEvidenciaParaconsistente(pas, pad);
-
         // Ajuste final com base na pressão arterial
-        double grauEvidenciaFinal = (grauEvidenciaNap3g1 + grauPressao) / 2;
+        double grauEvidenciaFinal = grauEvidenciaNap3g1;
 
         // Agora calculando o valor de UG (função de utilidade)
-        double ugFinal = calcularUG(grauEvidenciaNap3g1, grauPressao);  // Pode ajustar se for necessário outro valor para UG
+        double ugFinal = calcularUG(muFavoravel, lambdaDesfavoravel);  // Pode ajustar se for necessário outro valor para UG
 
         // Classificar o risco final com base nos dois valores
         String classificacaoRisco = classificarRisco(grauEvidenciaFinal, ugFinal);
@@ -133,6 +128,8 @@ public class AgParaconsist extends Agente {
         return new DadosAgente(classificacaoRisco, grauEvidenciaFinal);
     }
 
+    
+    
     // Método para classificar a pressão arterial
     private String classificarPressao(double pressao) {
         if (pressao > 140) {

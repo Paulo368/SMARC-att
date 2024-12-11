@@ -285,11 +285,13 @@ public class SMARC extends javax.swing.JDialog {
             agp.enviarDadosAgentePressao();
             agp.enviarDadosAgenteSedentarismo();
 
+            // Cada agente recebe seus dados para calculo
             agnict.receberDados();
             agobsei.receberDados();
             agpress.receberDados();
             agsed.receberDados();
             
+            // Os agentes enviam de voltar para o agente paraconsistente
             agnict.enviarDadosAgenteNicotina();
             agobsei.enviarDadosAgenteObesidade();
             agpress.enviarDadosAgentePressao();
