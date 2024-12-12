@@ -42,12 +42,16 @@ public class AgSedet extends Agente {
     }
 
     private double calcularGrauEvidencia() {
-        if (atividadesPorSemana >= 4) {
-            return 0.0; // Sem risco de sedentarismo
-        } else if (atividadesPorSemana <= 0) {
-            return 1.0; // Totalmente sedentário
+        if (atividadesPorSemana == 0) {
+            return 1.0;
+        } else if (atividadesPorSemana == 1) {
+            return 0.75;
+        } else if (atividadesPorSemana == 2) {
+            return 0.5;
+        } else if (atividadesPorSemana == 3) {
+            return 0.25;
         } else {
-            return 1.0 - (atividadesPorSemana / 4.0);
+            return 0.0;
         }
     }
 

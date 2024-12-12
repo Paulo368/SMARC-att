@@ -35,7 +35,6 @@ public class AgObesi extends Agente {
 
     @Override
     public DadosAgente processarDados() {
-        double imc = peso / (altura * altura);
         double grauEvidencia = calcularGrauEvidencia();
 
         return new DadosAgente("Obesidade", grauEvidencia);

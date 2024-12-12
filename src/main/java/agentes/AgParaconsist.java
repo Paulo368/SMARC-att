@@ -68,7 +68,7 @@ public class AgParaconsist extends Agente {
         // Recebe os dados do agente de obesidade (apenas o grau de evidência)
         ArrayList<Double> dadosAgente = comunicador.recebe(); // O comunicador vai fornecer os dados
         if (dadosAgente != null && !dadosAgente.isEmpty()) {
-            grauEvidenciaObesidade = 1-dadosAgente.get(0); // Assume-se que o primeiro valor é o grau de evidência
+            grauEvidenciaObesidade = 1 - dadosAgente.get(0); // Assume-se que o primeiro valor é o grau de evidência
             System.out.println("Grau de Evidência (Obesidade): " + grauEvidenciaObesidade);
         }
     }
@@ -88,7 +88,7 @@ public class AgParaconsist extends Agente {
         // Recebe os dados do agente de sedentarismo (apenas o grau de evidência)
         ArrayList<Double> dadosAgente = comunicador.recebe(); // O comunicador vai fornecer os dados
         if (dadosAgente != null && !dadosAgente.isEmpty()) {
-            grauEvidenciaSedentarismo = 1-dadosAgente.get(0); // Assume-se que o primeiro valor é o grau de evidência
+            grauEvidenciaSedentarismo = 1 - dadosAgente.get(0); // Assume-se que o primeiro valor é o grau de evidência
             System.out.println("Grau de Evidência (Sedentarismo): " + grauEvidenciaSedentarismo);
         }
     }
@@ -105,14 +105,14 @@ public class AgParaconsist extends Agente {
         
         double grauEvidenciaNap1g1 = calcularEvidenciaParaconsistente(muFavoravel, lambdaDesfavoravel);
 
-        // NAP2g1: combinação entre Nicotina e Obesidade
-        double grauEvidenciaNap2g1 = calcularEvidenciaParaconsistente(grauEvidenciaNicotina, grauEvidenciaObesidade);
-
-        // NAP3g1: combinação de NAP1g1 e NAP2g1
-        double grauEvidenciaNap3g1 = calcularEvidenciaParaconsistente(grauEvidenciaNap1g1, grauEvidenciaNap2g1);
+//        // NAP2g1: combinação entre Nicotina e Obesidade
+//        double grauEvidenciaNap2g1 = calcularEvidenciaParaconsistente(grauEvidenciaNicotina, grauEvidenciaObesidade);
+//
+//        // NAP3g1: combinação de NAP1g1 e NAP2g1
+//        double grauEvidenciaNap3g1 = calcularEvidenciaParaconsistente(grauEvidenciaNap1g1, grauEvidenciaNap2g1);
 
         // Ajuste final com base na pressão arterial
-        double grauEvidenciaFinal = grauEvidenciaNap3g1;
+        double grauEvidenciaFinal = grauEvidenciaNap1g1;
 
         // Agora calculando o valor de UG (função de utilidade)
         double ugFinal = calcularUG(muFavoravel, lambdaDesfavoravel);  // Pode ajustar se for necessário outro valor para UG
@@ -126,19 +126,6 @@ public class AgParaconsist extends Agente {
         System.out.println("Classificação do Risco Cardíaco: " + classificacaoRisco);
 
         return new DadosAgente(classificacaoRisco, grauEvidenciaFinal);
-    }
-
-    
-    
-    // Método para classificar a pressão arterial
-    private String classificarPressao(double pressao) {
-        if (pressao > 140) {
-            return "Alto risco de hipertensão";
-        } else if (pressao > 120) {
-            return "Moderado risco de hipertensão";
-        } else {
-            return "Baixo risco de hipertensão";
-        }
     }
 
     // Método para calcular a evidência paraconsistente
